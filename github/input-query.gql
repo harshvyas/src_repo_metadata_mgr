@@ -1,0 +1,15 @@
+query GetRepositoryMetadata($ownerName: String!, $repositoryName: String!) {
+                repository(owner: $ownerName, name: $repositoryName) {
+                    name
+                    description
+                    repositoryTopics(first: 10) {
+                        edges {
+                            node {
+                                topic {
+                                    name
+                                }
+                            }
+                        }
+                    }
+                }
+            }

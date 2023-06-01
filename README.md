@@ -1,0 +1,10 @@
+- ensure repository-metadata feature flag is set to true in site-admin
+- ensure the user has appropriate permissions on the sourcegraph instance to run mutation queries
+- generate sourcegraph and github access tokens
+- modify github/input-query.gql if needed based on github repo metadata query - by default it will sync the topics from github to keys in sourcegraph
+- run: pip install requirements.txt.
+- specify your GITHUB_TOKEN and SOURCEGRAPH_TOKEN as env variables.
+- run: python main.py (default preview mode, no sync of metadata)
+- run: python main.py --sync (first 10 repos metadata will be synced by default. TODO pagination)
+- run: python main.py --sync --repositories <a1/b1,a2/b2,a3/b3> (comma separated owner/repo format)
+- validate by running query repo:has.meta(key) - here key is the topic name from the github repo that has now been synced to sourcegraph

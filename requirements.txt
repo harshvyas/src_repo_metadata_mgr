@@ -1,0 +1,4 @@
+gql==3.4.1
+requests==2.31.0
+requests-toolbelt==1.0.0
+click==8.1.3
