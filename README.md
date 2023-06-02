@@ -72,6 +72,18 @@ python main.py --sync
 python main.py --sync --repos sourcegraph/sourcegraph,sourcegraph/src-cli
 ```
 
+## TODO
+
+- [] Implement pagination logic to handle more than the first 10 repositories.
+- [] Rate limit for both api's needs to be handled.
+- [] Add error handling and logging to provide more informative error messages.
+- [] Include additional metadata fields from GitHub to sync with Sourcegraph.
+- [] Create unit tests to ensure the script's functionality and prevent regressions.
+- [] Add support for other code hosting platforms besides GitHub.
+- [] Improve the command-line interface to provide more options and better user experience.
+- [] Refactor the code to enhance modularity and reusability.
+- [] Update the script to work with the latest API versions of GitHub and Sourcegraph.
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
