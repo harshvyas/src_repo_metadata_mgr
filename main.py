@@ -11,11 +11,17 @@ def get_environment_variable(name):
         raise ValueError(f"Environment variable {name} is not set.")
     return value
 
-@click.command()
+@click.command(help="""
+- By default synchronizes the first 10 search results for the string sourcegraph in any public github repository to sourcegraph.
+- Passing specific string will narrow synchronization to the first 10 search results in any public github repository to sourcegraph.
+- Use --repositories owner1/repo1,owner2/repo2 to explicity synchronize specific repos
+""")
+@click.argument('search_string', default='sourcegraph')
 @click.option('--sync','-s', is_flag=True, help='Execute the synchronization')
 @click.option('--repositories', '-r', help='Comma-separated list of github repositories to sync in format ownername/reponame e.g. sourcegraph/sourcegraph,sourcegraph/src-cli')
-def main(sync, repositories):
+def main(search_string, sync, repositories):
     try:
+        print("...")
         # Retrieve API tokens and owner name from environment variables
         github_token = get_environment_variable('GITHUB_TOKEN')
         github_api_url = 'https://api.github.com/graphql'
@@ -31,14 +37,14 @@ def main(sync, repositories):
         # Step 2: Fetch GitHub repositories that are configured in Sourcegraph 
         if repositories:
             #Specific repos
-            sourcegraph_github_repositories = [f"/github.com/{repo.strip()}" for repo in repositories.split(',')] if ',' in repositories else [f"/github.com/{repositories.strip()}"]
+            sourcegraph_github_repositories = [f"github.com/{repo.strip()}" for repo in repositories.split(',')] if ',' in repositories else [f"github.com/{repositories.strip()}"]
         else:
-            #all repos TODO only taking first 10 batchsize to prevent hitting api rate limit, pagination logic to be added
-            sourcegraph_github_repositories = sourcegraph_client.get_github_repositories(10)
+            search_string = f"repo:github.com/* {search_string} count:10"
+            sourcegraph_github_repositories = sourcegraph_client.get_github_repositories(search_string)
 
         # Loop through each
         for sourcegraph_github_repo in sourcegraph_github_repositories:
-            code_host_name, owner_name, repository_name = sourcegraph_github_repo.split("/")[1:4]
+            code_host_name, owner_name, repository_name = sourcegraph_github_repo.split("/")
             print(f"For {sourcegraph_github_repo}:")
 
             # Step 3: Fetch Existing Metadata from GitHub and Sourcegraph

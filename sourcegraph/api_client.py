@@ -7,26 +7,27 @@ class SourcegraphAPIClient:
         self.auth_header = {'Authorization': f'token {sourcegraph_token}'}
         self.graphql_client = GraphQLAPIClient(self.api_url, self.auth_header)
 
-    def get_repositories(self, batchSize):
+    def get_repositories(self, queryString):
         query = gql('''
-            query getRepositories($batchSize: Int!){
-                repositories(first: $batchSize){
-                    nodes {
-                        url
-                        externalRepository {
-                            serviceType
+            query search($queryString: String) {
+                search(query: $queryString) {
+                    results{
+                        repositoriesCount
+                        repositories{
+                            id,
+                            name
                         }
                     }
                 }
             }
         ''')
-        variables = {"batchSize": batchSize}
+        variables = {"queryString": queryString}
         response = self.graphql_client.execute_query(query, variables)
         return response
     
-    def get_github_repositories(self,batchSize):
-        repository_nodes = self.get_repositories(batchSize)['repositories']['nodes']
-        github_repositories = [node['url'] for node in repository_nodes if node['externalRepository']['serviceType'] == 'github']
+    def get_github_repositories(self,queryString):
+        repository_nodes = self.get_repositories(queryString)['search']['results']['repositories']
+        github_repositories = [node['name'] for node in repository_nodes]
         return github_repositories
 
     def fetch_repository_metadata(self, code_host_name, owner_name, repository_name):
