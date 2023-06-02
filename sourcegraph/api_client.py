@@ -1,11 +1,11 @@
 from utils.graphql_api_client import GraphQLAPIClient
 from gql import gql
 
-
 class SourcegraphAPIClient:
     def __init__(self, sourcegraph_api_url, sourcegraph_token):
         self.api_url = sourcegraph_api_url
         self.auth_header = {'Authorization': f'token {sourcegraph_token}'}
+        self.graphql_client = GraphQLAPIClient(self.api_url, self.auth_header)
 
     def get_repositories(self, batchSize):
         query = gql('''
@@ -21,8 +21,7 @@ class SourcegraphAPIClient:
             }
         ''')
         variables = {"batchSize": batchSize}
-        client = GraphQLAPIClient(self.api_url, self.auth_header)
-        response = client.execute_query(query, variables)
+        response = self.graphql_client.execute_query(query, variables)
         return response
     
     def get_github_repositories(self,batchSize):
@@ -47,21 +46,23 @@ class SourcegraphAPIClient:
 
         repository_name = f"{code_host_name}/{owner_name}/{repository_name}"
         variables = {'repositoryName': repository_name}
-        client = GraphQLAPIClient(self.api_url, self.auth_header)
-        response = client.execute_query(query, variables)
+        response = self.graphql_client.execute_query(query, variables)
         repository = response['repository']
         topics = [key['key'] for key in repository['keyValuePairs']]
         sourcegraph_repo_id = repository['id']
         return topics, sourcegraph_repo_id
     
-    def add_repository_topic(self, repo_id, topic_name):
+    # Seems the src-cli still uses add-kvp instead of add-metadata. 
+    # sourcegraph.com instance says addRepoKeyValuePair is going to be deprecated in favor of repo.metadata
+    # however sourcegraph app still uses addRepoKeyValuePair
+    # TODO review in future what is the standardized api for now using addRepoKeyValuePair as it works across both sourcegraph.com and sourcegraph app
+    def add_repository_topic(self, repo_id, repo_metadata_key, repo_metadata_value):
         mutation = gql('''
-            mutation AddRepositoryMetadata($repoID: ID!, $topicName: String!) {
-                addRepoKeyValuePair(repo: $repoID, key: $topicName){
+            mutation addRepoKeyValuePair($repoID: ID!, $repo_metadata_key: String!) {
+                addRepoKeyValuePair(repo: $repoID, key: $repo_metadata_key, value: null){
                     alwaysNil
                 }
             }
         ''')
-        variables = {'repoID': repo_id, 'topicName': topic_name}
-        client = GraphQLAPIClient(self.api_url, self.auth_header)
-        client.execute_query(mutation, variables)
+        variables = {'repoID': repo_id, 'repo_metadata_key': repo_metadata_key}
+        self.graphql_client.execute_query(mutation, variables)

@@ -21,7 +21,8 @@ def main(sync, repositories):
         github_api_url = 'https://api.github.com/graphql'
         github_query_file = "github/input-query.gql"
         sourcegraph_token = get_environment_variable('SOURCEGRAPH_TOKEN')
-        sourcegraph_api_url = 'http://127.0.0.1:3080/.api/graphql'
+        #sourcegraph_api_url = 'http://127.0.0.1:3080/.api/graphql'
+        sourcegraph_api_url = 'https://sourcegraph.com/.api/graphql'
 
         # Create instances of API clients and metadata retrievers
         github_client = GitHubAPIClient(github_api_url, github_token)
@@ -46,8 +47,8 @@ def main(sync, repositories):
             sourcegraph_data = metadata_retriever.fetch_sourcegraph_metadata(code_host_name, owner_name, repository_name)
 
             # Step 4: Sync Metadata from GitHub to Sourcegraph
-            synchronizer = MetadataSynchronizer(sourcegraph_client, github_data, sourcegraph_data, sync=sync)
-            synchronizer.sync_metadata()
+            synchronizer = MetadataSynchronizer(sourcegraph_client)
+            synchronizer.sync_metadata(github_data, sourcegraph_data, sync=sync)
             print("-----")
     except Exception as e:
         print('An error occurred:', str(e))
