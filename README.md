@@ -51,11 +51,11 @@ pip install -r requirements.txt
 Run the script with the following command:
 
 ```
-python main.py [--sync] [--repositories REPOSITORIES]
+python main.py [--sync] [--repos REPOSITORIES]
 ```
 
 - `--sync` or `-s`: Execute the synchronization (optional).
-- `--repositories REPOSITORIES` or `-r REPOSITORIES`: Comma-separated list of GitHub repositories to sync. Use the format `ownername/reponame`. For example: `sourcegraph/sourcegraph,sourcegraph/src-cli` (optional).
+- `--repos REPOSITORIES` or `-r REPOSITORIES`: Comma-separated list of GitHub repositories to sync. Use the format `ownername/reponame`. For example: `sourcegraph/sourcegraph,sourcegraph/src-cli` (optional).
 
 
 ## Examples
@@ -69,7 +69,7 @@ python main.py --sync
 2. Sync specific repositories:
 
 ```
-python main.py --sync --repositories sourcegraph/sourcegraph,sourcegraph/src-cli
+python main.py --sync --repos sourcegraph/sourcegraph,sourcegraph/src-cli
 ```
 
 ## License

@@ -14,11 +14,11 @@ def get_environment_variable(name):
 @click.command(help="""
 - By default synchronizes the first 10 search results for the string sourcegraph in any public github repository to sourcegraph.
 - Passing specific string will narrow synchronization to the first 10 search results in any public github repository to sourcegraph.
-- Use --repositories owner1/repo1,owner2/repo2 to explicity synchronize specific repos
+- Use --repos owner1/repo1,owner2/repo2 to explicity synchronize specific repos
 """)
 @click.argument('search_string', default='sourcegraph')
 @click.option('--sync','-s', is_flag=True, help='Execute the synchronization')
-@click.option('--repositories', '-r', help='Comma-separated list of github repositories to sync in format ownername/reponame e.g. sourcegraph/sourcegraph,sourcegraph/src-cli')
+@click.option('--repos', '-r', help='Comma-separated list of github repositories to sync in format ownername/reponame e.g. sourcegraph/sourcegraph,sourcegraph/src-cli')
 def main(search_string, sync, repositories):
     try:
         print("...")
