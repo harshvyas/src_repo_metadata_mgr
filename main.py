@@ -19,7 +19,7 @@ def get_environment_variable(name):
 @click.argument('search_string', default='sourcegraph')
 @click.option('--sync','-s', is_flag=True, help='Execute the synchronization')
 @click.option('--repos', '-r', help='Comma-separated list of github repositories to sync in format ownername/reponame e.g. sourcegraph/sourcegraph,sourcegraph/src-cli')
-def main(search_string, sync, repositories):
+def main(search_string, sync, repos):
     try:
         print("...")
         # Retrieve API tokens and owner name from environment variables
@@ -35,9 +35,9 @@ def main(search_string, sync, repositories):
         sourcegraph_client = SourcegraphAPIClient(sourcegraph_api_url, sourcegraph_token)
 
         # Step 2: Fetch GitHub repositories that are configured in Sourcegraph 
-        if repositories:
+        if repos:
             #Specific repos
-            sourcegraph_github_repositories = [f"github.com/{repo.strip()}" for repo in repositories.split(',')] if ',' in repositories else [f"github.com/{repositories.strip()}"]
+            sourcegraph_github_repositories = [f"github.com/{repo.strip()}" for repo in repos.split(',')] if ',' in repos else [f"github.com/{repos.strip()}"]
         else:
             search_string = f"repo:github.com/* {search_string} count:10"
             sourcegraph_github_repositories = sourcegraph_client.get_github_repositories(search_string)
