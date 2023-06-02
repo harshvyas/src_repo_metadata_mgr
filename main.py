@@ -21,7 +21,7 @@ def get_environment_variable(name):
 @click.option('--repos', '-r', help='Comma-separated list of github repositories to sync in format ownername/reponame e.g. sourcegraph/sourcegraph,sourcegraph/src-cli')
 def main(search_string, sync, repos):
     try:
-        print("...")
+        print("...Github -> Sourcegraph... ")
         # Retrieve API tokens and owner name from environment variables
         github_token = get_environment_variable('GITHUB_TOKEN')
         github_api_url = 'https://api.github.com/graphql'

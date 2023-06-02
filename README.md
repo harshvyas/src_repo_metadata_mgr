@@ -8,13 +8,13 @@ With this script, you can effortlessly keep the metadata in your Sourcegraph rep
 
 ![Problem Statement](https://raw.githubusercontent.com/harshvyas/src_repo_metadata_mgr/main/screenshots/problemstatement.png)
 
+## Execution    [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/harshvyas/src_repo_metadata_mgr/blob/main/src_repo_metadata_mgr.ipynb)
+
+![Execution](https://raw.githubusercontent.com/harshvyas/src_repo_metadata_mgr/main/screenshots/execution.png)
+
 ## Desired Result
 
 ![Desired Result](https://raw.githubusercontent.com/harshvyas/src_repo_metadata_mgr/main/screenshots/desiredresult.png)
-
-## Execute in Google Colab
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/harshvyas/src_repo_metadata_mgr/blob/main/src_repo_metadata_mgr.ipynb)
-
 
 ## Prerequisites
 
