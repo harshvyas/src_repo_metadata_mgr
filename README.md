@@ -1,4 +1,4 @@
-# GitHub to Sourcegraph Repository Metadata Synchronizer
+# GitHub to Sourcegraph Repo Metadata Synchronizer
 
 The GitHub to Sourcegraph Repository Metadata Synchronizer is a Python script designed to streamline the synchronization of repository metadata from GitHub to Sourcegraph instances. This script utilizes API clients for GitHub and Sourcegraph to retrieve GitHub repository metadata and synchronize it with corresponding Sourcegraph repositories.
 
