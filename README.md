@@ -48,22 +48,29 @@ pip install -r requirements.txt
 
 ## Usage
 
-Run the script with the following command:
+❯ python main.py --help
+Usage: main.py [OPTIONS] [SEARCH_STRING]
 
-```
-python main.py [--sync] [--repos REPOSITORIES]
-```
+- By default synchronizes the first 10 search results for the string
+  "sourcegraph" in any github repos available in your Sourcegraph instance. 
+- Passing specific string will narrow synchronization to the first 10 search results
+  in any github repos available in your Sourcegraph instance. 
+- Use --repos owner1/repo1,owner2/repo2 to explicity synchronize specific repos
+- Default is preview mode, to trigger synchronization pass --sync
 
-- `--sync` or `-s`: Execute the synchronization (optional).
-- `--repos REPOSITORIES` or `-r REPOSITORIES`: Comma-separated list of GitHub repositories to sync. Use the format `ownername/reponame`. For example: `sourcegraph/sourcegraph,sourcegraph/src-cli` (optional).
-
+- Options:
+    -s, --sync        Execute the synchronization
+    -r, --repos TEXT  Comma-separated list of github repositories to sync in
+                      format ownername/reponame e.g.
+                      sourcegraph/sourcegraph,sourcegraph/src-cli
+    --help            Show this message and exit.
 
 ## Examples
 
-1. Sync all repositories configured in Sourcegraph:
+1. Preview Github repos available in your Sourcegraph instance that match the search string "hello world":
 
 ```
-python main.py --sync
+python main.py "hello world"
 ```
 
 2. Sync specific repositories:
